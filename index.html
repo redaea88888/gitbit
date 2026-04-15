@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Bitcoin</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #222;
+            overflow: hidden;
+        }
+
+        #start-btn {
+            padding: 20px 40px;
+            font-size: 3rem;
+            color: white;
+            background-color: #f7931a; /* Bitcoin Orange */
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(247, 147, 26, 0.4);
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        #start-btn:hover {
+            transform: scale(1.05);
+            background-color: #e08316;
+            box-shadow: 0 10px 30px rgba(247, 147, 26, 0.6);
+        }
+
+        #danger-msg {
+            display: none;
+            font-size: 3.5rem;
+            text-align: center;
+            color: white;
+            text-shadow: 
+                -3px -3px 0 #000,  
+                 3px -3px 0 #000,
+                -3px  3px 0 #000,
+                 3px  3px 0 #000;
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            max-width: 90vw;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+
+        .flashing {
+            animation: flash 0.15s infinite !important;
+        }
+
+        @keyframes flash {
+            0%   { background-color: #ff0000; }
+            15%  { background-color: #ff7f00; }
+            30%  { background-color: #ffff00; }
+            45%  { background-color: #00ff00; }
+            60%  { background-color: #0000ff; }
+            75%  { background-color: #4b0082; }
+            90%  { background-color: #9400d3; }
+            100% { background-color: #ff0000; }
+        }
+    </style>
+</head>
+<body>
+    <button id="start-btn">CLAIM FREE BITCOIN 🤑</button>
+    
+    <h1 id="danger-msg">washe men naytake bagi free bitcoin , dioha shwya fe securité 😉😉</h1>
+
+    <script>
+        const btn = document.getElementById('start-btn');
+        const msg = document.getElementById('danger-msg');
+
+        btn.addEventListener('click', () => {
+            // Hide the button to reveal the prank
+            btn.style.display = 'none';
+            // Show the secret message
+            msg.style.display = 'block';
+            // Start the fast color flashing!
+            document.body.classList.add('flashing');
+
+            // Web Audio API to create a loud, synthetic danger alarm / siren sound
+            // Browsers block audio unless the user interacts (clicks), so this click event is perfect.
+            const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            // A sawtooth wave has a very harsh "alarm" sound
+            osc.type = 'sawtooth';
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            // Set the volume
+            gainNode.gain.value = 0.6;
+
+            // Start sound
+            osc.start();
+
+            // Create a sweeping up and down effect for a police/danger siren
+            let isHigh = false;
+            setInterval(() => {
+                const now = audioCtx.currentTime;
+                // Transition frequency quickly between 400Hz and 1200Hz
+                if (isHigh) {
+                    osc.frequency.linearRampToValueAtTime(400, now + 0.35);
+                } else {
+                    osc.frequency.linearRampToValueAtTime(1200, now + 0.35);
+                }
+                isHigh = !isHigh;
+            }, 350);
+        });
+    </script>
+</body>
+</html>
